@@ -1,0 +1,21 @@
+---
+
+- name: Enable epel-release
+  dnf:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+    state: latest
+
+- name: download R server rpm package
+  shell: curl -O https://download2.rstudio.org/rstudio-server-rhel-1.1.383-x86_64.rpm
+
+- name: install R server
+  dnf:
+    name: ./rstudio-server-rhel-1.1.383-x86_64.rpm
+    state: latest
+  register: result
+
+- name: Output install result
+  debug: var=result
+
+- name: restart R server
+  shell: systemctl restart rstudio-server

@@ -1,0 +1,22 @@
+---
+
+- name: Enable epel-release
+  dnf:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+    state: latest
+
+- name: download R rpm package
+  shell: curl -O https://cdn.rstudio.com/r/centos-8/pkgs/R-3.6.3-1-1.x86_64.rpm
+
+- name: install R (Enable Power Tools repostiory)
+  dnf:
+    name: ./R-3.6.3-1-1.x86_64.rpm
+    enablerepo: PowerTools
+    state: latest
+  register: result
+
+- name: Output install result
+  debug: var=result
+
+- name: Create a symlink to R
+  shell: ln -s /opt/R/3.6.3/bin/R /usr/local/bin/R && ln -s /opt/R/3.6.3/bin/Rscript /usr/local/bin/Rscript
